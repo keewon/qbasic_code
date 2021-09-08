@@ -1,0 +1,4 @@
+SCREEN 13
+CLS
+DIM a(1 TO 61)
+

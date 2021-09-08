@@ -1,0 +1,251 @@
+DECLARE SUB ending ()
+DECLARE SUB study ()
+DECLARE SUB inputword ()
+DECLARE SUB help ()
+DECLARE SUB exam ()
+DECLARE SUB qpic (filename$)
+DECLARE SUB main ()
+DECLARE SUB qhan (han$, row AS INTEGER, column AS INTEGER)
+
+CLS
+SCREEN 12
+TYPE wordsource
+   spell AS STRING * 20
+   mean AS STRING * 20
+END TYPE
+
+DIM SHARED word AS wordsource
+OPEN "4divi.fnt" FOR BINARY AS #2
+
+main
+END
+
+SUB ending
+END SUB
+
+SUB exam
+END SUB
+
+SUB help
+END SUB
+
+SUB inputword
+END SUB
+
+SUB main
+ qpic "title1.qpc"
+ qpic "menu1.qpc"
+ qhan "eksdj  rhdqn", 236, 144
+ qhan "eksdj  tlgja", 236, 176
+ qhan "eksdjwkd aksemfrl", 236, 208
+ qhan "ehdnaakf", 236, 240
+ qhan "skrkrl", 236, 272
+ qhan "djEjs dlfdmf gkfRkdy", 200, 304
+ LOCATE 20, 48: which$ = INPUT$(1)
+   SELECT CASE which$
+     CASE "1": study
+     CASE "2": exam
+     CASE "3": inputword
+     CASE "4": help
+     CASE "5": ending
+   END SELECT
+END SUB
+
+SUB qhan (han$, row AS INTEGER, column AS INTEGER)
+ DIM pnt(1 TO 29) AS INTEGER
+ DIM page AS INTEGER
+ DIM page1 AS INTEGER
+ DIM page2 AS INTEGER
+ DIM page3 AS INTEGER
+ DIM page4 AS INTEGER
+ DIM front AS INTEGER
+ DIM NoOfdata AS INTEGER
+ DIM i AS INTEGER
+
+  han00$ = han$ + ""
+ i = 1
+  COLOR 0
+  LINE (row, column)-(row + LEN(han$) * 16, column + 16), , BF
+ COLOR 15
+  DO UNTIL i > LEN(han$)
+
+        lt1$ = MID$(han00$, i, 1)
+          letter$ = lt1$: GOSUB defpage
+          page1 = page
+        lt2$ = MID$(han00$, i + 1, 1)
+          letter$ = lt2$: GOSUB defpage
+          page2 = page
+        lt3$ = MID$(han00$, i + 2, 1)
+          letter$ = lt3$: GOSUB defpage
+          page3 = page
+jamoja:
+IF page1 >= 1 AND page1 <= 19 AND page2 >= 20 AND page2 <= 33 AND page3 >= 1 AND page3 <= 19 THEN
+      page = page1: front = 0: GOSUB getandput
+      page = page2: front = 0: GOSUB getandput
+      i = i + 2: row = row + 16
+END IF
+
+jamomo:
+IF page1 >= 1 AND page1 <= 19 AND page2 >= 20 AND page2 <= 33 AND page3 >= 20 AND page3 <= 33 THEN
+      page = page1: front = 0: GOSUB getandput
+      page = page2: front = 0: GOSUB getandput
+      page = page3: front = 0: GOSUB getandput
+      i = i + 3: row = row + 16
+END IF
+
+jajaja:
+IF page1 >= 1 AND page1 <= 19 AND page2 >= 1 AND page2 <= 19 AND page3 >= 1 AND page3 <= 19 THEN
+GOSUB japlusja
+      page = page4: front = 1: GOSUB getandput
+      i = i + 2
+END IF
+
+jajax:
+IF page1 >= 1 AND page1 <= 19 AND page2 >= 1 AND page2 <= 19 AND page3 = 0 THEN
+GOSUB japlusja
+      page = page4: front = 1: GOSUB getandput
+      EXIT DO
+END IF
+
+
+jajamo:
+IF page1 >= 1 AND page1 <= 19 AND page2 >= 1 AND page2 <= 19 AND page3 >= 20 AND page3 <= 33 THEN
+      page = page1: front = 1: GOSUB getandput
+      i = i + 1
+END IF
+
+jaxx:
+IF page1 >= 1 AND page1 <= 19 AND page2 = 0 AND page3 = 0 THEN
+      page = page1: front = 1: GOSUB getandput
+      EXIT DO
+END IF
+
+jamox:
+IF page1 >= 1 AND page1 <= 19 AND page2 >= 20 AND page2 <= 33 AND page3 = 0 THEN
+      page = page1: front = 0: GOSUB getandput
+      page = page2: front = 0: GOSUB getandput
+      EXIT DO
+END IF
+
+casexxx:
+IF page1 = 0 AND page2 = 0 AND page3 = 0 THEN
+      EXIT DO
+END IF
+
+jaja0:
+IF page1 >= 1 AND page1 <= 19 AND page2 >= 1 AND page2 <= 19 AND page3 = 100 THEN
+GOSUB japlusja
+      page = page4: front = 1: GOSUB getandput
+      i = i + 1
+      END IF
+
+jamo0:
+IF page1 >= 1 AND page1 <= 19 AND page2 >= 20 AND page2 <= 33 AND page3 = 100 THEN
+      page = page1: front = 0: GOSUB getandput
+      page = page2: front = 0: GOSUB getandput
+      i = i + 2
+END IF
+
+ja0:
+IF page1 >= 1 AND page1 <= 19 AND page2 = 100 THEN
+      page = page1: front = 1: GOSUB getandput
+      i = i + 1
+END IF
+
+case0:
+IF page1 = 100 THEN
+     row = row + 24
+     i = i + 1
+END IF
+
+LOOP
+GOTO endsub
+
+getandput:
+    GET #2, (page + front * 33) * 60 + 1, NoOfdata
+    FOR k = 1 TO NoOfdata
+        GET #2, , pnt(k)
+     NEXT k
+    FOR j = 1 TO NoOfdata
+          y = FIX(pnt(j) / 16)
+          x = pnt(j) - y * 16
+       PSET (row + x - front * 16, column + y)
+    NEXT j
+RETURN
+defpage:
+            SELECT CASE letter$
+               CASE "r": page = 1
+               CASE "s": page = 2
+               CASE "e": page = 3
+               CASE "f": page = 4
+               CASE "a": page = 5
+               CASE "q": page = 6
+               CASE "t": page = 7
+               CASE "d": page = 8
+               CASE "w": page = 9
+               CASE "c": page = 10
+               CASE "z": page = 11
+               CASE "x": page = 12
+               CASE "v": page = 13
+               CASE "g": page = 14
+               CASE "R": page = 15
+               CASE "E": page = 16
+               CASE "Q": page = 17
+               CASE "T": page = 18
+               CASE "W": page = 19
+
+               CASE "k": page = 20
+               CASE "i": page = 21
+               CASE "j": page = 22
+               CASE "u": page = 23
+               CASE "h": page = 24
+               CASE "y": page = 25
+               CASE "n": page = 26
+               CASE "b": page = 27
+               CASE "m": page = 28
+               CASE "l": page = 29
+               CASE "o": page = 30
+               CASE "p": page = 31
+               CASE "O": page = 32
+               CASE "P": page = 33
+               CASE " ": page = 100
+               CASE "": page = 0
+            END SELECT
+      RETURN
+japlusja:
+       IF page1 = 1 AND page2 = 7 THEN page4 = 20
+       IF page1 = 2 AND page2 = 9 THEN page4 = 21
+       IF page1 = 2 AND page2 = 14 THEN page4 = 22
+       IF page1 = 4 AND page2 = 1 THEN page4 = 23
+       IF page1 = 4 AND page2 = 5 THEN page4 = 24
+       IF page1 = 4 AND page2 = 6 THEN page4 = 25
+       IF page1 = 4 AND page2 = 7 THEN page4 = 26
+       IF page1 = 4 AND page2 = 12 THEN page4 = 27
+       IF page1 = 4 AND page2 = 13 THEN page4 = 28
+       IF page1 = 4 AND page2 = 14 THEN page4 = 29
+       IF page1 = 6 AND page2 = 7 THEN page4 = 30
+RETURN
+endsub:
+
+END SUB
+
+SUB qpic (filename$)
+DIM x AS INTEGER
+DIM y AS INTEGER
+DIM c AS INTEGER
+DIM puthis AS INTEGER
+
+OPEN filename$ FOR BINARY AS #3
+
+WHILE NOT EOF(3)
+  GET #3, , c
+  GET #3, , x
+  GET #3, , y
+        COLOR c: PSET (x, y)
+WEND
+CLOSE #3
+END SUB
+
+SUB study
+END SUB
+

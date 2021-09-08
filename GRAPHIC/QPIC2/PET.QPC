@@ -1,0 +1,2 @@
+screen  13 
+dim getandput(1 to 10000)

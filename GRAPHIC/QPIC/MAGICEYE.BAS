@@ -1,0 +1,11 @@
+SCREEN 13
+RANDOMIZE TIMER
+FOR i = 0 TO 320
+ FOR j = 0 TO 200
+    c = INT(RND(3) * 15 + 1)
+    PSET (i, j), c
+ NEXT
+NEXT
+FOR k = 1 TO 30000000
+NEXT
+
